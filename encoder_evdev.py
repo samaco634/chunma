@@ -10,9 +10,12 @@ d = evdev.InputDevice('/dev/input/by-path/platform-rotary@14-event')
 print('Rotary encoder device: {}'.format(d.name))
  
 position = 0
- 
+
+d.grab()
 for e in d.read_loop():
+
     print('Event: {}'.format(e))
     if e.type == evdev.ecodes.EV_REL:
         position += e.value
         print('Position: {}'.format(position))
+d.ungrab()
