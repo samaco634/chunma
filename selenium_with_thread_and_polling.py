@@ -8,7 +8,7 @@ import time
 from qr_read import readQRCode
 
 import RPi.GPIO as GPIO
-from encoder_threading import EncoderThread
+from encoder_threading_polling import EncoderThread
 
 option = Options()
 option.add_argument("--start-maximized")
