@@ -3,6 +3,13 @@
 # Add to /boot/config.txt
 # dtoverlay=rotary-encoder,pin_a=20,pin_b=21,relative_axis=1,steps-per-period=2
 # Tweak pins and steps to match the encoder
+# 클래스로 만들고 while문 함수 추가해서 threading하기
+# import threading
+# # Create the thread
+#my_thread = threading.Thread(target=my_encoder.watch)
+
+# Launch the thread
+#my_thread.start()
  
 import evdev
  
