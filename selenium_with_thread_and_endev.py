@@ -6,8 +6,13 @@ from selenium.webdriver.chrome.service import Service
 
 import time
 from qr_read import readQRCode
-from encoder_endev import Encoder
+from encoder_endev_class import EncoderEvdev
 import threading
+
+url_list = ["https://www.naver.com/",
+            "https://www.youtube.com/",
+            "https://www.apple.com/"
+            ]
 
 option = Options()
 option.add_argument("--start-maximized")
@@ -22,6 +27,11 @@ option.add_experimental_option("excludeSwitches",["enable-automation"])
 
 driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=option)
 driver.get("https://www.naver.com")
+window_size_x, window_size_y = driver.get_window_size().values()
+# 스크롤 높이 가져옴
+max_scroll = driver.execute_script("return document.body.scrollHeight")
+#max_scroll = driver.execute_script;("return document.body.scrollWidth")
+
 
 currentPosition = 0
 def valueChanged(value, direction):
@@ -34,6 +44,9 @@ def valueChanged(value, direction):
             currentPosition = 0
     elif(direction == 'R'):
         currentPosition += 100
+        if(currentPosition > max_scroll):
+            currentPosition = max_scroll
+    print("current position {}, last_height {}".format(currentPosition, max_scroll))
     driver.execute_script("window.scrollTo(0, "+str(currentPosition)+")") 
 
 
@@ -47,8 +60,10 @@ my_thread.start()
 try:
     while True:
       url = readQRCode()
-      driver.get(url)
-      currentPosition = 0
-
+      if url in url_list:
+          driver.get(url)
+          currentPosition = 0
+          max_scroll = driver.execute_script("return document.body.scrollHeight")
+          #max_width = driver.execute_script("return document.body.scrollWidth")
 except Exception:
     pass
