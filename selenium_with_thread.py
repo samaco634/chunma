@@ -51,4 +51,6 @@ try:
 except Exception:
     pass
 
+e1.terminate()  
 GPIO.cleanup()
+e1.join()
