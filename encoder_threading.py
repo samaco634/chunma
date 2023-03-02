@@ -61,6 +61,7 @@ class EncoderThread(threading.Thread):
                             self.callback(self.value, self.direction)
 
             self.state = newState
+            sleep(0.1)
  
     def terminate(self):
         print('terminating thread')
