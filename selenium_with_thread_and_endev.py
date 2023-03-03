@@ -57,6 +57,7 @@ def reset_timer(timer):
     if timer not 0:
         timer.cancel()
     new_timer = threading.Timer(180, timeout)
+    new_timer.daemon = True
     new_timer.start()
     return new_timer
 
@@ -65,6 +66,7 @@ print(driver.get_window_size())
 
 env = EncoderEvdev (valueChanged);
 my_thread = threading.Thread(target=env.run)
+my_thread.daemon = True
 my_thread.start()
 
 timer = 0
