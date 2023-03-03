@@ -48,7 +48,17 @@ def valueChanged(value, direction):
             currentPosition = max_scroll
     print("current position {}, last_height {}".format(currentPosition, max_scroll))
     driver.execute_script("window.scrollTo(0, "+str(currentPosition)+")") 
+    timer = reset_timer(timer)
 
+def timeout():
+    raise TimeoutError("Timeout occurred after 3 minutes.")
+
+def reset_timer(timer):
+    if timer not 0:
+        timer.cancel()
+    new_timer = threading.Timer(180, timeout)
+    new_timer.start()
+    return new_timer
 
 # Default size
 print(driver.get_window_size())
@@ -56,6 +66,8 @@ print(driver.get_window_size())
 env = EncoderEvdev (valueChanged);
 my_thread = threading.Thread(target=env.run)
 my_thread.start()
+
+timer = 0
 
 try:
     while True:
@@ -65,5 +77,11 @@ try:
           currentPosition = 0
           max_scroll = driver.execute_script("return document.body.scrollHeight")
           #max_width = driver.execute_script("return document.body.scrollWidth")
+          timer = reset_timer(timer)
+except TimeoutError as e:
+    print(e)
+    driver.get("https://www.naver.com") #기본 페이지 display
+    currentPosition = 0
+    max_scroll = driver.execute_script("return document.body.scrollHeight")
 except Exception:
     pass
