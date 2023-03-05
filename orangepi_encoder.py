@@ -20,8 +20,8 @@ class Encoder:
         #wiringpi.wiringPiSetupGpio()  # For GPIO pin numbering
         #wiringpi.pinMode(self.leftPin, 0) #no useless for wiringPiSetupSys
         #wiringpi.pinMode(self.rightPin, 0) #no useless for wiringPiSetupSys
-        GPIO.add_event_detect(self.leftPin, GPIO.BOTH, callback=self.transitionOccurred)  
-        GPIO.add_event_detect(self.rightPin, GPIO.BOTH, callback=self.transitionOccurred)  
+        wiringpi.wiringPiISR(self.leftPin, wiringpi.INT_EDGE_BOTH, self.transitionOccurred)  
+        wiringpi.wiringPiISR(self.rightPin, wiringpi.INT_EDGE_BOTH, self.transitionOccurred)  
 
     def transitionOccurred(self, channel):
         p1 = wiringpi.digitalRead(self.leftPin)
