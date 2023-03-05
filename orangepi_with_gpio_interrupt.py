@@ -1,3 +1,16 @@
+# https://www.ics.com/blog/gpio-programming-using-sysfs-interface
+# $ echo 92 >/sys/class/gpio/export (physical 22)
+# $ echo 52 >/sys/class/gpio/export (physical 24)
+# $ ls /sys/class/gpio
+# $ ls /sys/class/gpio/gpio92/
+# $ ls /sys/class/gpio/gpio52/
+# $ echo in >/sys/class/gpio/gpio92/direction
+# $ echo in >/sys/class/gpio/gpio52/direction
+
+#The final step, if you are finished using the GPIO pin, is to unexport it. To do this, just write the pin name to the unexport file, i.e.
+# $ echo 92 >/sys/class/gpio/unexport
+# $ echo 52 >/sys/class/gpio/unexport
+
 from selenium import webdriver
 from selenium.webdriver.support import ui
 from selenium.webdriver.chrome.options import Options
@@ -36,7 +49,7 @@ def valueChanged(value, direction):
         currentPosition += 100
     driver.execute_script("window.scrollTo(0, "+str(currentPosition)+")")
 
-e1 = Encoder(18, 17, valueChanged)
+e1 = Encoder(92, 52, valueChanged)
 
 # Default size
 print(driver.get_window_size())
