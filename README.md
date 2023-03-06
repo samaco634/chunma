@@ -25,3 +25,7 @@ sudo gpioget gpiochip0 0 # gpiofind의 결과
 sudo apt update
 sudo apt install python3-libgpiod
 
+test_libgpiod.py
+test_libgpiod2.py
+sudo필요한지 여부 확인
+
