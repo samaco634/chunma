@@ -13,3 +13,4 @@ echo in >/sys/class/gpio/gpio52/direction
 # $ ls /sys/class/gpio/gpio52/
 # $ echo in >/sys/class/gpio/gpio92/direction
 # $ echo in >/sys/class/gpio/gpio52/direction
+# chmod +x orangepi_encoder.sh
