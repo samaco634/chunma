@@ -1,0 +1,33 @@
+/*
+ * Device Tree overlay for ALPS rotary input 
+ *
+ * compile:
+ * dtc -@ -I dts -O dtb -o gpio-rotary.dtbo gpio-rotary.dts
+ *
+ * armbian-add-overlay gpio-rotary.dts
+ */
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	model = "Orange Pi 5";
+	compatible = "rockchip,rk3588s-orangepi-5", "rockchip,rk3588";
+  rotary@0 {
+			compatible = "rotary-encoder";
+			gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>, <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>; /* GPIO19 is inverted */
+			linux,axis = <0>; /* REL_X */
+			rotary-encoder,encoding = "gray";
+			rotary-encoder,relative-axis;
+		};
+/*
+		rotary@1 {
+			compatible = "rotary-encoder";
+			gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>, <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;
+			linux,axis = <1>; /* ABS_Y */
+			rotary-encoder,steps = <24>;
+			rotary-encoder,encoding = "binary";
+			rotary-encoder,rollover;
+      };
+  */
+};
