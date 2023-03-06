@@ -7,6 +7,7 @@
  * armbian-add-overlay gpio-rotary.dts
  You only need the to add the compiled <file>.dtbo file to /boot/overlay-user and then enable it in /boot/armbianEnv.txt by adding it to the user_overlays=<file> line.
  */
+#include <dt-bindings/pinctrl/rockchip.h>
 
 /dts-v1/;
 /plugin/;
