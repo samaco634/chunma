@@ -1,0 +1,65 @@
+/*
+ * Device Tree overlay for ALPS rotary input 
+ *
+ * compile:
+ * dtc -@ -I dts -O dtb -o gpio-rotary.dtbo gpio-rotary.dts
+ *
+ * armbian-add-overlay gpio-rotary.dts
+ */
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	model = "Orange Pi 5";
+	compatible = "rockchip,rk3588s-orangepi-5", "rockchip,rk3588";
+
+	fragment@0 {
+		target = <&pio>;
+		__overlay__ {
+			pinctrl_button: pinctrl_button {
+				pins = "PA6";
+				function = "gpio_in";
+				bias-pull-up;
+        /*rockchip,pins =
+				<0 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up >;*/
+			};
+			pinctrl_rotary: pinctrl_rotary {
+				pins = "PG8","PG9";
+				function = "gpio_in";
+				bias-pull-up;
+        /*
+        rockchip,pins =
+				<0 GPIO6_C1 RK_FUNC_GPIO &pcfg_pull_up >, <0 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up >;
+        */
+			};
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+		__overlay__ {
+			rotary_button {
+				compatible = "gpio-keys";
+				pinctrl-names = "default";
+				pinctrl-0 = <&pinctrl_button>;
+
+				rotary_button_enter {
+					label = "ENTER";
+					linux,code = <99>; /* KEY_SYSRQ - see linux/input.h */
+					gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;#<&pio 0 6 1>; /* PA6 GPIO_ACTIVE_LOW */
+				};
+			};
+			rotary_axis {
+				/* https://mchehab.fedorapeople.org/kernel_docs/input/devices/rotary-encoder.html */
+				compatible = "rotary-encoder";
+				pinctrl-names = "default";
+				pinctrl-0 = <&pinctrl_rotary>;
+				gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;//gpios = <&pio 6 9 1>, <&pio 6 8 1>; /* PG8 PG9 GPIO_ACTIVE_LOW */
+				linux,axis = <1>; /* REL_Y */
+				rotary-encoder,relative-axis;
+				rotary-encoder,half-period;
+			};
+		};
+	};
+};
