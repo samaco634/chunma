@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service
 
 import time
 from qr_read import readQRCode
-from encoder_endev_class import EncoderEvdev
+from encoder_evdev_class import EncoderEvdev
 import threading
 
 url_list = ["https://www.naver.com/",
