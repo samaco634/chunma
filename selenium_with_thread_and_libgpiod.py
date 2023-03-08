@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.service import Service
 import time
 from qr_read import readQRCode
 from encoder_libgpiod import Encoder
+#from encoder_libgpiod2 import Encoder #offset 값 확인 할 것
 import threading
 
 url_list = ["https://www.naver.com/",
