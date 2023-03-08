@@ -26,41 +26,41 @@ selenium_with_thread_and_endev.py
 encoder_evdev_class.py 
 
 ---  
-root@imx8mm-cgt-sx8m: cat /sys/kernel/debug/gpio
-gpiochip0: GPIOs 0-31, parent: platform/30200000.gpio, 30200000.gpio:
-gpio-1 ( |bkl pwm ) out hi
-gpio-8 ( |enable ) out hi
-gpio-9 ( |rotary@0 ) in lo IRQ ACTIVE LOW
-gpio-10 ( |rotary@0 ) in lo IRQ
-gpio-12 ( |regulator-usb ) out lo
+root@imx8mm-cgt-sx8m: cat /sys/kernel/debug/gpio  
+gpiochip0: GPIOs 0-31, parent: platform/30200000.gpio, 30200000.gpio:  
+gpio-1 ( |bkl pwm ) out hi  
+gpio-8 ( |enable ) out hi  
+gpio-9 ( |rotary@0 ) in lo IRQ ACTIVE LOW  
+gpio-10 ( |rotary@0 ) in lo IRQ  
+gpio-12 ( |regulator-usb ) out lo  
 ---  
-root@imx8mm-cgt-sx8m:~# cat /proc/interrupts
+root@imx8mm-cgt-sx8m:~# cat /proc/interrupts    
 
-.
+.  
 
-.
+.  
 
-73: 0 gpio-mxc 9 Edge rotary-encoder
+73: 0 gpio-mxc 9 Edge rotary-encoder  
 74: 0 gpio-mxc 10 Edge rotary-encoder  
-----
-root@imx8mm-cgt-sx8m:~# evtest
-No device specified, trying to scan all of /dev/input/event*
-Available devices:
-/dev/input/event0: 30370000.snvs:snvs-powerkey
-/dev/input/event1: rotary@0
-/dev/input/event2: gpio-keys
-/dev/input/event3: bd718xx-pwrkey
-/dev/input/event4: PixArt Dell MS116 USB Optical Mouse
-Select the device event number [0-4]: 1
-Input driver version is 1.0.1
-Input device ID: bus 0x19 vendor 0x0 product 0x0 version 0x0
-Input device name: "rotary@0"
-Supported events:
-Event type 0 (EV_SYN)
-Event type 2 (EV_REL)
-Event code 1 (REL_Y)
-Properties:
-Testing ... (interrupt to exit)
+----  
+root@imx8mm-cgt-sx8m:~# evtest  
+No device specified, trying to scan all of /dev/input/event*  
+Available devices:  
+/dev/input/event0: 30370000.snvs:snvs-powerkey  
+/dev/input/event1: rotary@0  
+/dev/input/event2: gpio-keys  
+/dev/input/event3: bd718xx-pwrkey  
+/dev/input/event4: PixArt Dell MS116 USB Optical Mouse  
+Select the device event number [0-4]: 1  
+Input driver version is 1.0.1  
+Input device ID: bus 0x19 vendor 0x0 product 0x0 version 0x0  
+Input device name: "rotary@0"  
+Supported events:  
+Event type 0 (EV_SYN)  
+Event type 2 (EV_REL)  
+Event code 1 (REL_Y)  
+Properties:  
+Testing ... (interrupt to exit)  
 -------
 3안
 
