@@ -1,4 +1,5 @@
-python selenium_with_thread_and_libgpiod.py
+python selenium_with_thread_and_libgpiod.py  
+
 -----------------------------
 # chunma
 https://www.acmesystems.it/rotary_encoder
