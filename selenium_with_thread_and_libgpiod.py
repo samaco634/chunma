@@ -56,7 +56,8 @@ try:
     while True:
       url = readQRCode()
       if url in url_list:
-          driver.get(url)
+          #driver.get(url)
+          driver.switch_to.window(handler_list[site_list.index(url)])
           timer = reset_timer(timer)
 except Exception:
     pass
