@@ -2,17 +2,21 @@ from selenium import webdriver
 from selenium.webdriver.support import ui
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 import time
 from qr_read import readQRCode
 from encoder_libgpiod import Encoder
-#from encoder_libgpiod2 import Encoder #offset 값 확인 할 것
 import threading
 
 url_list = ["https://www.naver.com/",
             "https://www.youtube.com/",
             "https://www.apple.com/"
+            "https://github.com/"
+            "https://google.com/"
             ]
+handler_list = []
 
 option = Options()
 option.add_argument("--start-maximized")
@@ -27,42 +31,19 @@ option.add_experimental_option("excludeSwitches",["enable-automation"])
 
 driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=option)
 driver.get("https://www.naver.com")
-window_size_x, window_size_y = driver.get_window_size().values()
-# 스크롤 높이 가져옴
-max_scroll = driver.execute_script("return document.body.scrollHeight")
-#max_scroll = driver.execute_script;("return document.body.scrollWidth")
+# Setup wait for later
+wait = WebDriverWait(driver, 10)
+handler_list.append(driver.current_window_handle)
 
+for i, url in enumerate(site_list[1:]):
+    # Opens a new tab and switches to new tab
+    driver.switch_to.new_window('tab')
+    driver.get(url)
+    # Wait for the new window or tab
+    wait.until(EC.number_of_windows_to_be(i+2))
+    handler_list.append(driver.current_window_handle)
 
-currentPosition = 0
-def valueChanged(value, direction):
-    global driver
-    global currentPosition
-    print("* New value: {}, Direction: {}".format(value, direction))
-    if(direction == 'L'):
-        currentPosition -= 100
-        if(currentPosition < 0):
-            currentPosition = 0
-    elif(direction == 'R'):
-        currentPosition += 100
-        if(currentPosition > max_scroll):
-            currentPosition = max_scroll
-    print("current position {}, last_height {}".format(currentPosition, max_scroll))
-    driver.execute_script("window.scrollTo(0, "+str(currentPosition)+")") 
-    timer = reset_timer(timer)
-
-def timeout():
-    raise TimeoutError("Timeout occurred after 3 minutes.")
-
-def reset_timer(timer):
-    if timer not 0:
-        timer.cancel()
-    new_timer = threading.Timer(180, timeout)
-    new_timer.daemon = True
-    new_timer.start()
-    return new_timer
-
-# Default size
-print(driver.get_window_size())
+driver.switch_to.window(handler_list[site_list.index("https://www.naver.com/")])
 
 env = Encoder(valueChanged);
 my_thread = threading.Thread(target=env.run)
@@ -76,14 +57,31 @@ try:
       url = readQRCode()
       if url in url_list:
           driver.get(url)
-          currentPosition = 0
-          max_scroll = driver.execute_script("return document.body.scrollHeight")
-          #max_width = driver.execute_script("return document.body.scrollWidth")
           timer = reset_timer(timer)
-except TimeoutError as e:
-    print(e)
-    driver.get("https://www.naver.com") #기본 페이지 display
-    currentPosition = 0
-    max_scroll = driver.execute_script("return document.body.scrollHeight")
 except Exception:
     pass
+
+def valueChanged(value, direction):
+    global driver
+    global currentPosition
+    global timer
+    print("* New value: {}, Direction: {}".format(value, direction))
+    if(direction == 'L'):
+        driver.execute_script("window.scrollBy(0, 100)") 
+    elif(direction == 'R'):
+        driver.execute_script("window.scrollBy(0, -100)")     
+    timer = reset_timer(timer)
+
+def timeout():
+    global timer
+    if timer:
+        timer.cancel()
+    driver.switch_to.window(handler_list[site_list.index("https://www.naver.com/")]) #기본 페이지 display
+
+def reset_timer(timer):
+    if timer:
+        timer.cancel()
+    new_timer = threading.Timer(180, timeout)
+    new_timer.daemon = True
+    new_timer.start()
+    return new_timer
