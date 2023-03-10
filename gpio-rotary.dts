@@ -27,7 +27,7 @@
 		__overlay__ {
 			rotary_axis {
 				/* https://mchehab.fedorapeople.org/kernel_docs/input/devices/rotary-encoder.html */
-				compatible = "rotary-encoder";
+				compatible = "rotary-encoderc";
 				pinctrl-names = "default";
 				pinctrl-0 = <&pinctrl_rotary>;
 				gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_LOW>,<&gpio1 RK_PA3 GPIO_ACTIVE_LOW>;
