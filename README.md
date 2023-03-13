@@ -1,3 +1,6 @@
+https://stackoverflow.com/questions/42950789/selenium-open-local-files
+
+---------------------------------   
 python selenium_with_thread_and_libgpiod.py  
 
 -----------------------------
